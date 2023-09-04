@@ -1,8 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import MediaPost, { IMedia } from "../models/MediaPost";
 import { readFileSync } from "fs";
-import path from "path";
-import { Document } from "mongoose";
+import { ErrorHandler } from "../utils/ErrorHandler";
 
 export const getMediaPosts = async (
   req: Request,
@@ -62,4 +61,21 @@ export const postMedia = async (
       })
     });
   }
+};
+
+
+export const getUserProfileAndMediaPosts = async (req: Request, res: Response, next: NextFunction) => {
+  const user = await MediaPost.findById(req.body.userId);
+
+  if(!user) {
+      return next(new ErrorHandler('User not found', 404));
+  }
+
+  const mediaPosts = await MediaPost.find({ userId: req.body.userId });
+
+  res.status(200).json({
+      success: true,
+      user: user,
+      userPosts: mediaPosts
+  })
 };
