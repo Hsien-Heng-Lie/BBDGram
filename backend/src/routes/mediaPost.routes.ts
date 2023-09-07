@@ -1,5 +1,5 @@
 import multer from "multer";
-import { getMediaPosts, postMedia, getMediaPostsByUser, likeMediaPost, dislikeMediaPost } from "../controllers/mediaPostController";
+import { getMediaPosts, postMedia, getMediaPostsByUser, likeMediaPost, dislikeMediaPost, removeLikeOrDislike } from "../controllers/mediaPostController";
 import { Router } from "express";
 
 export const mediaRouter = Router();
@@ -23,3 +23,5 @@ mediaRouter.post("/media/posts", upload.single("image"), postMedia);
 mediaRouter.post("/media/posts/like", likeMediaPost);
 
 mediaRouter.post("/media/posts/dislike", dislikeMediaPost);
+
+mediaRouter.post("/media/posts/removeLikesAndDislikes", removeLikeOrDislike);
