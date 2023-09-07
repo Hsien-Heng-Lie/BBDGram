@@ -3,6 +3,7 @@ import Header from '../Header/Header';
 import '../UserProfile/UserProfile.css';
 import { ApiResponse } from '../../providers/userProvider';
 import { Buffer } from 'buffer';
+import type {Post} from '../../models/posts'
 
 import Popup from 'reactjs-popup';
 
@@ -10,8 +11,8 @@ const UserProfile = () => {
   const [description, setDescription] = useState("Bio description goes here. Something about me.");
   const [user, setUser] = useState("username");
 
-  const [userPosts, setUserPosts] = useState<Posts[]>([])
-  const [selectedPost, setSelectedPost] = useState<Posts | null>(null);
+  const [userPosts, setUserPosts] = useState<Post[]>([])
+  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [selectedImage, setSelectedImage] = useState<File>()
   const [newDescription, setNewDescription] = useState('')
 
@@ -31,7 +32,7 @@ const UserProfile = () => {
     }
   }
 
-  const handlePostClick = (post: Posts) => {
+  const handlePostClick = (post: Post) => {
     setSelectedPost(post);
   };
 
@@ -50,7 +51,7 @@ const UserProfile = () => {
   }, [])
 
   const getData = async () => {
-    const url = `${config.API_Base_Url}/media/posts`;
+    const url = `${process.env.API_Base_Url}/media/posts`;
     const mediaPosts = new ApiResponse();
 
     mediaPosts.getData(url).then((response: any) => {
@@ -71,7 +72,7 @@ const UserProfile = () => {
   }
 
   const newPost = () => {
-    const url = `${config.API_Base_Url}/media/posts`;
+    const url = `${process.env.API_Base_Url}/media/posts`;
     const mediaPosts = new ApiResponse();
 
     const email = localStorage.getItem('user');
@@ -88,10 +89,6 @@ const UserProfile = () => {
 
   }
 
-=======
-  const handlePostClick = (post: Post) => {
-    setSelectedPost(post);
-  };
 
   const countLikes = (post: any)=> {
     return post.likes.length;
