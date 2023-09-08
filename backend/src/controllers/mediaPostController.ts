@@ -142,3 +142,26 @@ export const dislikeMediaPost = async (
     })
   }
 }
+
+export const removeLikeOrDislike = async (
+  req: Request,
+  res: Response
+) => {
+  const response = await MediaPost.updateOne(
+    { _id: req.body.postId },
+    { $pullAll: { likes: [req.body.userId], dislikes: [req.body.userId] } }
+  )
+
+  if (response.acknowledged) {
+    res.status(200).json({
+      success: true,
+      message: "Successfully removed like or dislike"
+    });
+  } else {
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+      response
+    })
+  }
+}
